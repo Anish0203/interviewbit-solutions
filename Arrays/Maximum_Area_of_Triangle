@@ -1,0 +1,62 @@
+int ceel(int l,int b)
+{
+    int val=1.0*ceil(1.0*0.5*l*b);
+    return val;
+}
+int Solution::solve(vector<string> &A) {
+    int m=A.size(),n=A[0].size(),i,j;
+    unordered_map<char,int>left,right;//stores leftmost and rightmost column of each color
+    for(i=0;i<m;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            char c=A[i][j];
+            if(left[c]==0)
+                left[c]=j+1;
+            else
+                left[c]=min(left[c],j+1);
+            if(right[c]==0)
+                right[c]=j+1;
+            else
+                right[c]=max(right[c],j+1);
+        }
+    }
+    int ans=0;
+    for(j=0;j<n;j++)
+    {
+        unordered_map<char,int>up,down;
+        for(i=0;i<m;i++)
+        {
+            char c=A[i][j];
+            if(up[c]==0)
+                up[c]=i+1;
+            else
+                up[c]=min(up[c],i+1);
+            if(down[c]==0)
+                down[c]=i+1;
+            else
+                down[c]=max(down[c],i+1);
+        }
+        vector<char>v{'r','g','b'};
+        int x,y;
+        for(x=0;x<3;x++)
+        {
+            for(y=0;y<3;y++)
+            {
+                if(x==y)
+                    continue;
+                int z=3-x-y;
+                if(up[v[x]]==0 or down[v[y]]==0)
+                    continue;
+                int len=1+abs(up[v[x]]-down[v[y]]);
+                int b1=0,b2=0;
+                if(left[v[z]])
+                    b1=1+abs(left[v[z]]-j-1);
+                if(right[v[z]])
+                    b2=1+abs(right[v[z]]-j-1);
+                ans=max({ans,ceel(len,b1),ceel(len,b2)});
+            }
+        }
+    }
+    return ans;
+}
