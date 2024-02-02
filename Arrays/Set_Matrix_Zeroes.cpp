@@ -1,0 +1,31 @@
+void Solution::setZeroes(vector<vector<int> > &A) {
+    unordered_map<int,int>row,col;
+    int m=A.size(),n=A[0].size(),i,j;
+    for(i=0;i<m;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            if(!A[i][j])
+            {
+                row[i]++;
+                col[j]++;
+            }
+        }
+    }
+    for(i=0;i<m;i++)
+    {
+        if(row[i])
+        {
+            for(j=0;j<n;j++)
+            A[i][j]=0;
+        }
+    }
+    for(j=0;j<n;j++)
+    {
+        if(col[j])
+        {
+            for(i=0;i<m;i++)
+            A[i][j]=0;
+        }
+    }
+}
